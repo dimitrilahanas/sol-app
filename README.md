@@ -1,86 +1,91 @@
-# Mars Weather Dashboard
+# Sol.
 
-A **Flutter mobile dashboard** for visualizing Mars weather data fetched from a custom Python backend API.
+A Flutter mobile dashboard for exploring weather on Mars, powered by a custom FastAPI backend.
 
----
-
-## 📌 About the Project
-
-Mars Weather Dashboard is a **Flutter-based mobile application** designed to display Mars weather data in a clean and intuitive interface.
-
-The app consumes data from a dedicated **Python backend service**, which handles fetching and processing data from NASA’s InSight API. This architecture keeps the frontend lightweight and focused on UI/UX.
+<p align="center">
+<img src="1.png" alt="Sol home screen" width="250"/>
+<img src="2.png" alt="Sol weather detail" width="250"/>
+</p>
 
 ---
 
-## 🧠 Project Architecture
+## About
 
-This project is part of a **two-repository system**:
+Sol. displays Martian weather data in a clean, mobile-friendly interface. Pick a sol (a Martian day) and see its temperature, season and wind conditions at a glance.
 
-- **Backend API**  
-  [python-mars-weather](https://github.com/dimitrilahanas/python-mars-weather)  
-  A **FastAPI service** that retrieves, processes, and exposes Mars weather data.
-
-- **Frontend Dashboard (this repository)**  
-  A **Flutter mobile app** that consumes the backend API and presents the data visually to the user.
+The app doesn't call NASA directly. A dedicated Python backend fetches and processes data from NASA's InSight API, which keeps the app lightweight and focused on UI.
 
 ---
 
-## 🎯 Features
+## Architecture
 
-- Display the latest available Martian Sol
-- Select a Sol to view detailed weather data:
+Sol. is split across two repositories:
+
+| Repo | Role | Stack |
+|---|---|---|
+| **sol-app** (this repo) | Mobile dashboard | Flutter, Dart |
+| [**sol-api**](https://github.com/dimitrilahanas/sol-api) | Fetches, processes and serves the weather data | Python, FastAPI |
+
+```
+NASA InSight API  →  sol-api (FastAPI)  →  sol-app (Flutter)
+```
+
+---
+
+## Features
+
+- Shows the latest available sol on launch
+- Select any sol to view:
   - Average temperature
   - Martian season
   - Wind direction
   - Wind speed
-- Simple, mobile-friendly interface
-- API-driven architecture (no direct NASA API calls from the app)
-- Light and Dark theme support
+- Light and dark themes
+- API-driven: all data comes through the backend
 
 ---
 
-## 🔧 Tech Stack
+## Code Structure
 
-- **Flutter & Dart** – for cross-platform mobile app development
-- **REST API** – for data consumption from the backend
-- **FastAPI (backend)** – for serving Mars weather data
-
----
-
-## 🛠 Code Structure
-
-- **Models**
-  - `DataModel` – represents individual weather metrics like temperature or wind speed.
-  - `SolModel` – represents all weather data for a single Martian Sol.
-
-- **Services**
-  - `HttpServices` – handles HTTP requests to the backend API to fetch available Sols and their weather data.
-
-- **Widgets**
-  - `HomeScreen` – main dashboard screen with Sol selection and weather grid.
-  - `SolHeader` – displays selected Sol number and header.
-  - `SolSelector` – horizontal ChoiceChip list for selecting Sols.
-  - `WeatherGrid` – displays weather metrics in a 2x2 grid.
-  - `DataWidget` – individual metric display card.
-
-- **Theme**
-  - `DefaultTheme` – provides light and dark theme color schemes.
+```
+lib/
+├── models/
+│   ├── DataModel      # a single weather metric (temperature, wind speed…)
+│   └── SolModel       # all weather data for one sol
+├── services/
+│   └── HttpServices   # requests to sol-api
+├── widgets/
+│   ├── HomeScreen     # main dashboard
+│   ├── SolHeader      # selected sol number and header
+│   ├── SolSelector    # horizontal ChoiceChip list of sols
+│   ├── WeatherGrid    # 2×2 grid of metrics
+│   └── DataWidget     # individual metric card
+└── theme/
+    └── DefaultTheme   # light and dark colour schemes
+```
 
 ---
 
-## ✅ Project Status
+## Getting Started
 
-This project is **complete** and fully functional.
-
-**Future improvements:**
-
-- Refactor code for readability and maintainability
+1. Clone and run [sol-api](https://github.com/dimitrilahanas/sol-api) first.
+2. Clone this repo and install dependencies:
+   ```bash
+   git clone https://github.com/dimitrilahanas/sol-app.git
+   cd sol-app
+   flutter pub get
+   ```
+3. Point `HttpServices` at your running API, then:
+   ```bash
+   flutter run
+   ```
 
 ---
 
-## 🏗 Screenshots
+## Status
 
-<p align="center">
-<img src="1.png" alt="Main Page" width="250"/>
-<img src="2.png" alt="Main Page" width="250"/>
-</p>
+Complete and functional.
+
+**Next up:** refactor for readability and maintainability.
+
+> **Note:** NASA's InSight mission ended in December 2022, so the dataset is historical and covers the sols InSight recorded.
